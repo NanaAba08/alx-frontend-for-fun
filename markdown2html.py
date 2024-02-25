@@ -17,40 +17,45 @@ import sys
 import os
 import markdown
 
+
 import sys
+import os
 import markdown
 
-def main():
-    """
-    Main function to convert a Markdown file to HTML.
-    """
-    # Check if the correct number of arguments were passed in
-    if len(sys.argv) != 3:
-        sys.stderr.write("Usage: ./markdown2html.py [input_file] [output_file]\n")
-        sys.exit(1)
-
-    # Get the input and output file names
-    input_file = sys.argv[1]
-    output_file = sys.argv[2]
-
-    # Check if the input file exists
+def convert_markdown_to_html(markdown_file, output_file):
     try:
-        with open(input_file, 'r') as f:
-            pass
-    except FileNotFoundError:
-        sys.stderr.write(f"Missing {input_file}\n")
+        # Check if Markdown file exists
+        if not os.path.exists(markdown_file):
+            print(f"Missing {markdown_file}", file=sys.stderr)
+            sys.exit(1)
+        
+        # Read Markdown content
+        with open(markdown_file, 'r') as md_file:
+            markdown_content = md_file.read()
+        
+        # Convert Markdown to HTML
+        html_content = markdown.markdown(markdown_content)
+        
+        # Write HTML content to output file
+        with open(output_file, 'w') as html_file:
+            html_file.write(html_content)
+        
+        # Print nothing and exit 0
+        sys.exit(0)
+    
+    except Exception as e:
+        print(f"An error occurred: {e}", file=sys.stderr)
         sys.exit(1)
-
-    # Convert the Markdown to HTML
-    with open(input_file, 'r') as f:
-        html = markdown.markdown(f.read())
-
-    # Write the HTML to the output file
-    with open(output_file, 'w') as f:
-        f.write(html)
-
-    # Exit successfully
-    sys.exit(0)
 
 if __name__ == "__main__":
-    main()
+    # Check if arguments are provided correctly
+    if len(sys.argv) < 3:
+        print("Usage: ./markdown2html.py README.md README.html", file=sys.stderr)
+        sys.exit(1)
+    
+    # Extract arguments
+    markdown_file = sys.argv[1]
+    output_file = sys.argv[2]
+    
+    # Convert Markdown to HTML
+    convert_markdown_to_html(markdown_file, output_file)
