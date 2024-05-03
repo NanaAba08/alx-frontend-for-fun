@@ -1,12 +1,3 @@
-$list_to_sort: john, anna, zoe, kim, felicia, carrie;
-
-@function sortList($list) {
-  $sorted-list: ();
-  @each $item in $list {
-    $sorted-list: append($sorted-list, $item);
-  }
-  @return sort($sorted-list);
-}
-
-$list_sorted: sortList($list_to_sort);
-@debug $list_sorted;
+/* Sass file */
+@import '103-sort_list.scss';
+@debug
